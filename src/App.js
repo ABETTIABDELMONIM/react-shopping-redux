@@ -2,7 +2,9 @@ import React from 'react';
 
 import Filter from './components/Filter';
 import Products from './components/Products';
+import Cart from './components/Cart';
 import data from "./data.json"
+
 
 
 
@@ -11,16 +13,30 @@ import data from "./data.json"
 class App extends React.Component {
   constructor(){
     super();
-    this.addToCart =  this.addToCart.bind(this);
     this.state = {
         products :data.products,
         size:"ALL",
         sort:"",
+        cartItems : []
       }; 
   }
 
-  addToCart  (product) {
-    console.log("addToCart function");
+  addToCart =  (product) => {
+    const cartItems = this.state.cartItems.slice();
+    let itemExist = false;
+    cartItems.forEach(item => {
+      if(item._id === product._id){
+        item.count++;
+        itemExist = true;
+      }
+    });
+    if(!itemExist){
+      cartItems.push({
+        ...product,
+        count : 1,
+      });
+    }
+    this.setState({cartItems});
   }
 
   sortProducts = event =>{
@@ -48,7 +64,12 @@ class App extends React.Component {
     });
   }
 
-
+  remove = product =>{
+   const cartItems = this.state.cartItems.slice();
+   this.setState({
+     cartItems : cartItems.filter(x => x._id !== product._id),
+   })
+  }
 
   render(){
    
@@ -62,9 +83,11 @@ class App extends React.Component {
           <div className="main">
             <Filter count={this.state.products.length} size={this.state.size} sort={this.state.sort} 
             sortProducts={this.sortProducts}   filterProducts={this.filterProducts} />
-            <Products products={this.state.products} addTocart={this.addToCart} ></Products>
+            <Products products={this.state.products} add={this.addToCart} ></Products>
           </div>
-          <div className="sidebar">Sidebar</div>
+          <div className="sidebar">
+            <Cart cartItems={this.state.cartItems}  removeFormCart={this.remove}></Cart>
+          </div>
         </div>
         </main>
         <footer>
