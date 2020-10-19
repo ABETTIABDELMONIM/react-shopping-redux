@@ -1,7 +1,10 @@
 import React from 'react';
+
 import Filter from './components/Filter';
 import Products from './components/Products';
 import data from "./data.json"
+
+=======
 
 
 
