@@ -2,7 +2,6 @@ import React, {Component} from 'react';
 import formatCurrency from '../Utils';
 
 
-
 class Products extends Component {
     
    
