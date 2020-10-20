@@ -4,7 +4,25 @@ import formatCurrency from "../Utils";
 class Cart extends Component {
     constructor(props) {
         super(props);
-        this.state = {  }
+        this.state = {  
+            name :"",
+            email : "",
+            adresse : "",
+            checkout : false,
+        }
+    }
+    handleInput = (event) =>{
+        this.setState({[event.target.name]:event.target.value});
+    }
+    createOrder = (e) =>{
+        e.preventDefault();
+        const order ={
+            name:this.state.name,
+            email:this.state.email,
+            adresse:this.state.adresse,
+            cartItem:this.props.cartItem,
+        };
+        this.props.createOrder(order);
     }
     render() { 
         const {cartItems} = this.props;
@@ -43,10 +61,32 @@ class Cart extends Component {
                               {formatCurrency(cartItems.reduce((a,b) => (a + (b.price*b.count)),0))}
                           </div>
                       </div>
-                      <button className="button primary" >Procced</button>
+                      <button className="button primary" onClick={() =>{this.setState({checkout:true})}} >Procced</button>
                   </div>
                 )}
-              
+              {this.state.checkout && (
+                <div className="form-container">
+                    <form onSubmit={this.createOrder}  >
+                        <ul>
+                            <li>
+                                <label>Name :</label>
+                                <input type="text" required="required" name="name" onChange={this.handleInput}></input>
+                            </li>
+                            <li>
+                                <label>email :</label>
+                                <input type="email" required="required" name="adresse" onChange={this.handleInput} ></input>
+                            </li>
+                            <li>
+                                <label>adresse :</label>
+                                <input type="text" required="required" name="adresse" onChange={this.handleInput}></input>
+                            </li>
+                            <li>
+                        <button className="button primary" type="submit" >Create Order</button>
+                        </li>
+                        </ul>
+                    </form>
+                </div>
+                   )}
             </div>
           );
     }

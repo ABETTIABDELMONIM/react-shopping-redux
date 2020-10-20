@@ -161,3 +161,20 @@ footer {
   flex: 1;
   align-items: center;
 }
+form {
+  width: 100%;
+}
+.form-container {
+  padding: 0rem;
+  width: 100%;
+  list-style-type: none;
+}
+.form-container li {
+  display: flex;
+  flex-direction: column;
+  padding: 1rem;
+}
+input {
+  padding: 1rem;
+  border: 0.1rem #0c0c0c solid;
+}

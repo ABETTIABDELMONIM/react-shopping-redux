@@ -17,7 +17,7 @@ class App extends React.Component {
         products :data.products,
         size:"ALL",
         sort:"",
-        cartItems : []
+        cartItems : localStorage.getItem("cartItem")? JSON.parse(localStorage.getItem("cartItem")):[],
       }; 
   }
 
@@ -37,6 +37,7 @@ class App extends React.Component {
       });
     }
     this.setState({cartItems});
+    localStorage.setItem("cartItem",JSON.stringify(cartItems));
   }
 
   sortProducts = event =>{
@@ -69,8 +70,12 @@ class App extends React.Component {
    this.setState({
      cartItems : cartItems.filter(x => x._id !== product._id),
    })
+   localStorage.setItem("cartItem",JSON.stringify(this.state.cartItems));
   }
 
+  createOrder= (order) =>{
+    alert("New order has been create : "+order.name);
+  }
   render(){
    
     return (
@@ -86,7 +91,7 @@ class App extends React.Component {
             <Products products={this.state.products} add={this.addToCart} ></Products>
           </div>
           <div className="sidebar">
-            <Cart cartItems={this.state.cartItems}  removeFormCart={this.remove}></Cart>
+            <Cart cartItems={this.state.cartItems}  removeFormCart={this.remove} createOrder={this.createOrder}></Cart>
           </div>
         </div>
         </main>
